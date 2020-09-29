@@ -1,0 +1,308 @@
+/*
+    This file should be structured similiar to the html elements.
+    Meaning:    -Styles for elements at the top of the page, have their styles at the top of this file
+                -Styles for elements at the middle/body of the page, have their styles in the middle of this file
+                -Styles for elements at the bottom of the page, have their style at the bottom of this file
+                -Exception: Reusable class-styles should be at the very bottom
+*/
+
+/* Style the tab */
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #141414;
+    border-radius: 12px;
+    margin-bottom: 0.5%;
+    height: 3vh;
+    color: white;
+    width: 98.3%;
+    margin-left: 0.8%;
+}
+
+/* Style the buttons inside the tab */
+
+.tab button {
+    background-color: #404040;
+    float: left;
+    outline: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: 0.3s;
+    font-size: 17px;
+    color: inherit;
+    border-left: none;
+    border-right-color: black;
+    border-right-width: 3px;
+    border-top: none;
+}
+
+.last {
+    float: right !important;
+    border-right: none;
+}
+
+/* Change background color of buttons on hover */
+
+.tab button:hover {
+    background-color: tomato;
+}
+
+/* Create an active/current tablink class */
+
+.tab button.active {
+    background-color: orange;
+}
+
+/* Style the tab content */
+
+.tabcontent {
+    display: none;
+    /* padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none; */
+}
+
+/* .quitButton input {
+    top: 0%;
+    right: 4%;
+    left: 96.5%;
+    width: 2vw;
+    height: 5vh;
+    float: right;
+    background: url(../img/red_power_btn.svg) no-repeat;
+    cursor: pointer;
+    border: none;
+} */
+
+/* div.quitButton input:hover {
+    position: fixed;
+    top: 0%;
+    right: 0%;
+    width: 4%;
+    height: 4%;
+    background: url(../img/red_power_btn_pressed.svg) no-repeat;
+    cursor: pointer;
+    border: none;
+} */
+
+body {
+    margin-top: 2%;
+    background-color: #404040;
+    color: white;
+    height: 98% !important;
+}
+
+.bodyContent {
+    position: relative;
+    /* background-color: teal; */
+    height: 67vh;
+}
+
+.content {
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.left {
+    width: 49%;
+    background-color: #141414;
+    border-radius: 12px;
+    height: 100%;
+    position: relative;
+}
+
+#hotfixSelection {
+    background-color: #404040;
+    color: white;
+    width: 98%;
+    height: 90%;
+    border-radius: 12px;
+    margin-left: 1%;
+    position: relative;
+}
+
+.left strong {
+    margin-left: 10px !important;
+}
+
+.right strong {
+    margin-left: 10px !important;
+}
+
+.right {
+    width: 49%;
+    background-color: #141414;
+    border-radius: 12px;
+}
+
+#parameters {
+    background-color: #404040;
+    width: 47.5%;
+    height: 90%;
+    overflow-y: scroll;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin-left: 1%;
+    position: absolute;
+}
+
+#deleteHotfixURLButton {
+    background-color: red !important;
+}
+
+#hotfixButtonLayout {
+    position: relative;
+    padding-bottom: 0.5%;
+}
+
+#hotfixButtonLayout input[type="button"] {
+    background-color: goldenrod;
+    position: relative;
+    margin-left: 2ex;
+    margin-top: 1ex;
+}
+
+#refreshHotfixURLButton {
+    background-color: greenyellow !important;
+    border-radius: 12px;
+    right: 10px;
+    position: absolute !important;
+}
+
+footer {
+    margin-top: 0.7%;
+    bottom: 0pt;
+    overflow: auto;
+    height: 22vh;
+    position: relative;
+    width: 99.6%;
+}
+
+#proxySettings {
+    display: flex;
+}
+
+#clearButton {
+    background-color: greenyellow;
+    border-radius: 12px;
+    width: 4%;
+}
+
+#log {
+    background: #141414;
+    overflow: auto;
+    width: 99.5%;
+    height: 90%;
+    position: absolute;
+    bottom: 0.5%;
+    border-radius: 5px;
+}
+
+#log div {
+    border-color: gray;
+    border-width: 1px;
+    border-radius: 2px;
+    border-style: solid;
+}
+
+#log p {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 5px;
+}
+
+.logError {
+    color: red;
+}
+
+.logInfo {
+    color: yellow;
+}
+
+.logOk {
+    color: green;
+}
+
+/* The switch - the box around the slider */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+/* Hide default HTML checkbox */
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.settings {
+    /* width: 97%; */
+    background-color: #141414;
+    display: block !important;
+    /* justify-content: left !important; */
+    /* height: 100%; */
+    width: 98.4%;
+    height: 67vh;
+    margin-left: 0.7%;
+    border-radius: 12px;
+}
+
+.settings strong {
+    position: absolute;
+    left: 1vw;
+    top: 1vh
+}
+
+.setting {
+    position: absolute;
+    left: 1vw;
+}
+
+/* The slider */
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: orangered;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px orangered;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
