@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -9,6 +10,7 @@
 <head>
     <script src="./js/jquery.min.js" defer></script>
     <script src="./js/main.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet"> 
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,31 +18,28 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./css/styles.css">
-
 </head>
 
-<header>
-    <label style="position: fixed; top: 10px; margin: auto; width: 100%; text-align: center; color: red;">WebSocket
-        connection sometimes can take a
-        bit. Please be
-        patient until you see info in the Log below!</label>
-    <div class="tab">
-        <button class="tablinks" onclick="openTabContent(event, 'hotfixAndParamsContent')" id="defaultTab">Hotfix
-            Settings</button>
-        <button class="tablinks" onclick="openTabContent(event, 'proxySettingsContent')">Proxy Settings</button>
-        <button class="tablinks last">Quit</button>
-        <!-- <div class="quitButton"><input type="button" name="" value=""></input></div> -->
+<body>
+    <div class="fixed-header">
+        <div class="container" style="position: relative;">
+            <div class="tab">
+                <button class="tablinks" onclick="openTabContent(event, 'hotfixAndParamsContent')" id="defaultTab">Hotfix
+                    Settings</button>
+                <button class="tablinks" onclick="openTabContent(event, 'proxySettingsContent')">Proxy Settings</button>
+
+                <label style="color: red;vertical-align: middle;padding-top: 0.5%; padding-left: 15%;font-family: sans-serif;" id="warningLabel">WebSocket disconnected! Connection can take a bit. Be patient until you see info in the Log below!</label>
+
+                <button class="tablinks last">Quit</button>
+            </div>
+        </div>
     </div>
 
-</header>
-
-<body>
-    <div class="bodyContent">
+    <div class="container">
         <div id="hotfixAndParamsContent" class="tabcontent">
             <div class="content">
-                <!-- <div class="hotfixAndParams"> -->
                 <div class="left">
-                    <strong style="font-size: larger;">Currently Provided Hotfixpath(s)</strong>
+                    <strong style="font-size: larger;position: absolute;top: 3%;left:50%;transform: translate(-50%, -50%);">Currently Provided Hotfix Paths</strong>
                     <br><br>
                     <select id="hotfixSelection" size="36">
                     </select>
@@ -55,12 +54,10 @@
                 </div>
 
                 <div class="right">
-                    <strong style="font-size: larger;">Parameters</strong>
+                    <strong style="font-size: larger;position: absolute;top: 3%;left:75%;transform: translate(-50%, -50%);">Parameters</strong>
                     <br><br>
                     <div id="parameters"></div>
-
                 </div>
-                <!-- </div> -->
             </div>
         </div>
 
@@ -69,21 +66,24 @@
                 <strong>Proxy Settings</strong>
                 <br><br>
                 <div class="setting">
-                    <label for="mergeToggle">Replace</label>
+                    <label for="mergeToggle" style="vertical-align: middle;padding-top: 5px;">Replace</label>
                     <label class="switch" name="mergeToggle" id="mergeToggle">
                         <input type="checkbox">
                         <span class="slider"></span>
                     </label>
-                    <label for="mergeToggle">Merge</label>
+                    <label for="mergeToggle" style="vertical-align: middle;padding-top: 5px;">Merge</label>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="fixed-footer">
+        <div class="container" id="footer">
+            <input type="button" value="Clear Log" id="clearButton">
+            <p id="log">
+            </p>
+        </div>
+    </div>
 </body>
-<footer>
-    <strong style="font-size: large;">Log:</strong>
-    <input type="button" value="Clear" id="clearButton">
-    <div id="log"></div>
-</footer>
 
 </html>

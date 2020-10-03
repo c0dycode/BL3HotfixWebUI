@@ -2,7 +2,7 @@
 
 const wsAdd = "ws://127.0.0.1:9998/ws";
 
-var ws;// = new WebSocket(wsAdd);
+var ws
 var lastSelectedHotfix;
 var webSocketIntervalID;
 
@@ -10,9 +10,7 @@ var log = document.getElementById("log");
 
 $(window).on("load", function () {
     var clearbtn = document.getElementById("clearButton");
-    clearbtn.onclick = function () {
-        clearChildElements("#log")
-    }
+    clearbtn.onclick = function () { clearChildElements("#log") }
 
     if (window.WebSocket === undefined) {
         var item = document.createElement("div");
@@ -24,22 +22,14 @@ $(window).on("load", function () {
     document.querySelector("#addURLButton").onclick = function (event) {
         var url = prompt("Please enter the direct URL to a json- or txt-file!", "")
         if (url != null) {
-            var msg = {
-                error: "ok",
-                content: url,
-                eventName: "addNewHotfixURL"
-            }
+            var msg = { error: "ok", content: url, eventName: "addNewHotfixURL" }
             ws.send(JSON.stringify(msg));
         }
     };
 
     // ADD LOCAL HotfixURL
     document.querySelector("#addLocalButton").onclick = function (event) {
-        var msg = {
-            error: "ok",
-            content: "",
-            eventName: "openFileDialog"
-        }
+        var msg = { error: "ok", content: "", eventName: "openFileDialog" }
         ws.send(JSON.stringify(msg));
     };
 
@@ -47,11 +37,7 @@ $(window).on("load", function () {
     document.querySelector("#deleteHotfixURLButton").onclick = function (event) {
         var url = document.querySelector("#hotfixSelection").value
         if (url != null) {
-            var msg = {
-                error: "ok",
-                content: url,
-                eventName: "removeHotfixURL"
-            }
+            var msg = { error: "ok", content: url, eventName: "removeHotfixURL" }
             ws.send(JSON.stringify(msg));
             clearChildElements("#parameters");
         }
@@ -62,11 +48,7 @@ $(window).on("load", function () {
         lastSelectedHotfix = document.querySelector("#hotfixSelection").value;
         getHotfixList();
         if (lastSelectedHotfix != null) {
-            var msg = {
-                error: "ok",
-                content: lastSelectedHotfix,
-                eventName: "getParameter"
-            }
+            var msg = { error: "ok", content: lastSelectedHotfix, eventName: "getParameter" }
             ws.send(JSON.stringify(msg));
         }
     };
@@ -75,11 +57,7 @@ $(window).on("load", function () {
     document.querySelector(".tablinks.last").onclick = function (event) {
         var decision = confirm("Would you like to exit? This will also turn off the proxy!")
         if (decision == true) {
-            var msg = {
-                error: "ok",
-                content: lastSelectedHotfix,
-                eventName: "quit"
-            }
+            var msg = { error: "ok", content: lastSelectedHotfix, eventName: "quit" }
             ws.send(JSON.stringify(msg));
 
             var d = document.createElement("div");
@@ -95,14 +73,9 @@ $(window).on("load", function () {
     $("#mergeToggle").on("change", function (e) {
         var value = $("#mergeToggle > input")[0].checked;
         if (value !== null) {
-            var msg = {
-                error: "ok",
-                content: value.toString(),
-                eventName: "toggleMerge"
-            }
-            if (ws !== null) {
+            var msg = { error: "ok", content: value.toString(), eventName: "toggleMerge" }
+            if (ws !== null) 
                 ws.send(JSON.stringify(msg));
-            }
             console.log("mergeToggle has changed: ", value);
         }
     });
@@ -113,55 +86,50 @@ $(window).on("load", function () {
 function openTabContent(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
+    for (i = 0; i < tabcontent.length; i++)  tabcontent[i].style.display = "none";
+
     tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+    for (i = 0; i < tablinks.length; i++) tablinks[i].className = tablinks[i].className.replace(" active", "");
+
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
 
+var wsOnOpen = function(msg) {
+    console.log("WebSocket connected...");
+    document.getElementById('warningLabel').textContent = ''; // Empty the warning label 
 
-var wsOnOpen = function (msg) {
-    //clearInterval(webSocketIntervalID);
     getHotfixList();
     getProxySettings();
 }
 
-var wsOnClose = function (msg) {
+var wsOnClose = function(msg) {
     console.log('Socket is closed. Reconnect will be attempted in 1 second.', msg.reason);
+    document.getElementById('warningLabel').textContent = 'WebSocket disconnected! Connection can take a bit. Be patient until you see info in the Log below!'; // Empty the warning label 
     ws = null;
-    setTimeout(function () {
-        initWs();
-    }, 1000);
+    setTimeout( function () { initWs(); }, 1000);
 };
 
-var wsOnError = function (msg) {
+var wsOnError = function(msg) {
     console.log("Websocket Error: ", msg);
     ws.close();
 }
 
-var wsOnMessage = function (e) {
-    let container = document.getElementById("log");
+var wsOnMessage = function(e) {
+    let logParagraph = document.getElementById("log");
     try {
         var resp = JSON.parse(e.data);
         if (resp.eventName == "LogMessage") {
-            var d = document.createElement("div");
-            var item = document.createElement("p");
-            item.innerText = resp.content;
-            if (resp.error == "ok") {
-                item.setAttribute("class", "logOk")
-            } else if (resp.error == "error") {
-                item.setAttribute("class", "logError")
-            } else if (resp.error == "info") {
-                item.setAttribute("class", "logInfo")
-            }
-            d.appendChild(item)
-            container.prepend(d);
-        } else if (resp.eventName == "hotfixList") {
+            console.log("received log message!!");
+            // Set the font color of the specific logging types
+            // ok = "green", error = "red", all others = "yellow"
+            styledContent = resp.content.fontcolor( (resp.error == "ok" ? "green" : (resp.error == "error" ? "red" : "yellow")) );
+            logParagraph.innerHTML = styledContent + "<br>" + logParagraph.innerHTML;
+        } 
+        else if (resp.eventName == "hotfixList") {
+            if(resp.content == "null") return;
+
+            console.log("received hotfix list");
             var d = document.getElementById("hotfixSelection");
             var hotfixes = JSON.parse(resp.content);
 
@@ -172,38 +140,50 @@ var wsOnMessage = function (e) {
                     var item = document.createElement("option");
                     item.innerText = element;
                     item.value = element;
+                    item.addEventListener('dblclick', function(e) {
+                        link = e.originalTarget.value;
+                        try {
+                            if(Boolean(new URL(link))) {
+                                window.open(link, "_blank", "noreferrer noopener")
+                            }
+                            // For some reason you can't actually open files using window.open so I just gave up :)
+                        } catch(e) { return; }
+                    });
+                    
                     d.appendChild(item);
                 });
                 d.onchange = function (e) {
                     lastSelectedHotfix = e.target.value;
-                    var msg = {
-                        error: "ok",
-                        content: e.target.value,
-                        eventName: "getParameter"
-                    }
+                    var msg = { error: "ok", content: e.target.value, eventName: "getParameter" }
                     ws.send(JSON.stringify(msg));
                 };
             }
-        } else if (resp.eventName == "parameters") {
+        } 
+        else if (resp.eventName == "parameters") {
             var d = document.getElementById("parameters");
 
             clearChildElements("#parameters");
 
             var params = document.getElementById("parameters");
             var item = document.createElement("pre");
-            item.innerText = resp.content;
+            formattedParam = "";
+            try { 
+                formattedParam = JSON.stringify(JSON.parse(resp.content), null, 4); 
+            }  catch(e) { formattedParam = resp.content == "null" ? "N/A" : resp.content; }
+            item.innerText = formattedParam;
             params.appendChild(item);
 
-            if (lastSelectedHotfix != null) {
-                let hfs = document.getElementById("hotfixSelection").value = lastSelectedHotfix;
-            }
-        } else if (resp.eventName == "proxySettings") {
+            if (lastSelectedHotfix != null) 
+                hfs = document.getElementById("hotfixSelection").value = lastSelectedHotfix;
+        }
+        else if (resp.eventName == "proxySettings") {
             var temp = JSON.parse(resp.content);
             if (temp !== null) {
                 $("#mergeToggle > input")[0].checked = !temp.replaceHotfixes;
             }
-        }
-    } catch (e) {
+        } 
+    } 
+    catch (e) {
         console.log(e);
     }
 }
