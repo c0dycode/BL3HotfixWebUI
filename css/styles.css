@@ -6,35 +6,56 @@
                 -Exception: Reusable class-styles should be at the very bottom
 */
 
-/* Style the tab */
+html {
+    background-image: url('https://borderlands.com/images/_generated/1x/images/news/header-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #404040;
+    font-family: Helvetica;
+}
 
+/* Headers & Footers */
+.fixed-header, .fixed-footer {
+    width: 100%;
+    position: fixed;
+    padding: 10px 0;
+    color: #fff;
+}
+.fixed-header {
+    top: 0;
+}
+.fixed-footer {
+    bottom: 0;
+}
+
+/* Style the tab */
 .tab {
     overflow: hidden;
     border: 1px solid #ccc;
-    background-color: #141414;
+    background-color: rgba(20, 20, 20, 0.75);
     border-radius: 12px;
     margin-bottom: 0.5%;
     height: 3vh;
     color: white;
     width: 98.3%;
     margin-left: 0.8%;
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Style the buttons inside the tab */
-
 .tab button {
-    background-color: #404040;
+    background-color: rgba(20, 20, 20, 0.75);
     float: left;
     outline: none;
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 4.5px 10px;
     transition: 0.3s;
     font-size: 17px;
     color: inherit;
     border-left: none;
     border-right-color: black;
     border-right-width: 3px;
-    border-top: none;
+    border-top: 50px;
 }
 
 .last {
@@ -45,57 +66,29 @@
 /* Change background color of buttons on hover */
 
 .tab button:hover {
-    background-color: tomato;
+    background-color: rgba(255, 99, 71, 0.65);
 }
 
 /* Create an active/current tablink class */
 
 .tab button.active {
-    background-color: orange;
+    background-color: rgba(255, 165, 0, 0.9265);
 }
 
 /* Style the tab content */
 
 .tabcontent {
-    display: none;
-    /* padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none; */
+    display: table-row;
+    padding-top: 6%;
+    padding-bottom: 4%;
 }
 
-/* .quitButton input {
-    top: 0%;
-    right: 4%;
-    left: 96.5%;
-    width: 2vw;
-    height: 5vh;
-    float: right;
-    background: url(../img/red_power_btn.svg) no-repeat;
-    cursor: pointer;
-    border: none;
-} */
-
-/* div.quitButton input:hover {
-    position: fixed;
-    top: 0%;
-    right: 0%;
-    width: 4%;
-    height: 4%;
-    background: url(../img/red_power_btn_pressed.svg) no-repeat;
-    cursor: pointer;
-    border: none;
-} */
-
 body {
-    margin-top: 2%;
-    background-color: #404040;
     color: white;
-    height: 98% !important;
 }
 
 .bodyContent {
     position: relative;
-    /* background-color: teal; */
     height: 67vh;
 }
 
@@ -107,20 +100,22 @@ body {
 
 .left {
     width: 49%;
-    background-color: #141414;
+    background-color: rgba(20, 20, 20, 0.75);
     border-radius: 12px;
     height: 100%;
     position: relative;
 }
 
 #hotfixSelection {
-    background-color: #404040;
+    background-color: rgba(64, 64, 64, 0.75);
     color: white;
-    width: 98%;
-    height: 90%;
+    width: 96.5%;
+    height: 85%;
     border-radius: 12px;
     margin-left: 1%;
     position: relative;
+    overflow: scroll;
+    border-color: transparent;
 }
 
 .left strong {
@@ -133,12 +128,12 @@ body {
 
 .right {
     width: 49%;
-    background-color: #141414;
+    background-color: rgba(20, 20, 20, 0.75);
     border-radius: 12px;
 }
 
 #parameters {
-    background-color: #404040;
+    background-color: rgba(64, 64, 64, 0.75);
     width: 47.5%;
     height: 90%;
     overflow-y: scroll;
@@ -150,6 +145,7 @@ body {
 
 #deleteHotfixURLButton {
     background-color: red !important;
+    border-color: transparent;
 }
 
 #hotfixButtonLayout {
@@ -162,6 +158,8 @@ body {
     position: relative;
     margin-left: 2ex;
     margin-top: 1ex;
+    border-color: transparent;
+    border-radius: 12px;
 }
 
 #refreshHotfixURLButton {
@@ -169,15 +167,14 @@ body {
     border-radius: 12px;
     right: 10px;
     position: absolute !important;
+    border-color: transparent;
 }
 
-footer {
-    margin-top: 0.7%;
-    bottom: 0pt;
-    overflow: auto;
-    height: 22vh;
-    position: relative;
-    width: 99.6%;
+#footer {
+    width: 99%;
+    max-height: 22%;
+    bottom: 0px;
+    margin-left: 0.75%;
 }
 
 #proxySettings {
@@ -187,42 +184,18 @@ footer {
 #clearButton {
     background-color: greenyellow;
     border-radius: 12px;
-    width: 4%;
+    width: 95px;
+    border-color: transparent;
 }
 
 #log {
-    background: #141414;
-    overflow: auto;
-    width: 99.5%;
-    height: 90%;
-    position: absolute;
-    bottom: 0.5%;
+    background: rgba(20, 20, 20, 0.9);
+    max-width: 99.5%;
     border-radius: 5px;
-}
-
-#log div {
-    border-color: gray;
-    border-width: 1px;
-    border-radius: 2px;
-    border-style: solid;
-}
-
-#log p {
-    margin-top: 1px;
-    margin-bottom: 1px;
-    margin-left: 5px;
-}
-
-.logError {
-    color: red;
-}
-
-.logInfo {
-    color: yellow;
-}
-
-.logOk {
-    color: green;
+    height: 140px;
+    overflow-y: scroll;
+    margin: 0;
+    font-family: sans-serif
 }
 
 /* The switch - the box around the slider */
@@ -243,11 +216,8 @@ footer {
 }
 
 .settings {
-    /* width: 97%; */
-    background-color: #141414;
+    background-color: rgba(20, 20, 20, 0.75);
     display: block !important;
-    /* justify-content: left !important; */
-    /* height: 100%; */
     width: 98.4%;
     height: 67vh;
     margin-left: 0.7%;
