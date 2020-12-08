@@ -15,20 +15,24 @@ html {
 }
 
 /* Headers & Footers */
+
 .fixed-header, .fixed-footer {
     width: 100%;
     position: fixed;
     padding: 10px 0;
     color: #fff;
 }
+
 .fixed-header {
     top: 0;
 }
+
 .fixed-footer {
     bottom: 0;
 }
 
 /* Style the tab */
+
 .tab {
     overflow: hidden;
     border: 1px solid #ccc;
@@ -43,6 +47,7 @@ html {
 }
 
 /* Style the buttons inside the tab */
+
 .tab button {
     background-color: rgba(20, 20, 20, 0.75);
     float: left;
@@ -110,7 +115,7 @@ body {
     background-color: rgba(64, 64, 64, 0.75);
     color: white;
     width: 96.5%;
-    height: 85%;
+    height: 60vh;
     border-radius: 12px;
     margin-left: 1%;
     position: relative;
@@ -160,6 +165,18 @@ body {
     margin-top: 1ex;
     border-color: transparent;
     border-radius: 12px;
+}
+
+#moveURLUpButton {
+    background-color: greenyellow !important;
+    border-radius: 12px;
+    border-color: transparent;
+}
+
+#moveURLDownButton {
+    background-color: greenyellow !important;
+    border-radius: 12px;
+    border-color: transparent;
 }
 
 #refreshHotfixURLButton {

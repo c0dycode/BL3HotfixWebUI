@@ -53,6 +53,35 @@ $(window).on("load", function () {
         }
     };
 
+    // Move HotfixURL Up - lower priority
+    document.querySelector("#moveURLUpButton").onclick = function (event) {
+        lastSelectedHotfix = document.querySelector("#hotfixSelection").value;
+        let index = document.querySelector("#hotfixSelection").selectedIndex;
+
+        var msg = { error: "ok", content: index.toString(), eventName: "moveHotfixURLUp" }
+        ws.send(JSON.stringify(msg));
+
+        getHotfixList();
+        if (lastSelectedHotfix != null) {
+            var msg = { error: "ok", content: lastSelectedHotfix, eventName: "getParameter" }
+            ws.send(JSON.stringify(msg));
+        }
+    };
+
+    // Move HotfixURL Down - higher priority
+    document.querySelector("#moveURLDownButton").onclick = function (event) {
+        lastSelectedHotfix = document.querySelector("#hotfixSelection").value;
+        let index = document.querySelector("#hotfixSelection").selectedIndex;
+
+        var msg = { error: "ok", content: index.toString(), eventName: "moveHotfixURLDown" }
+        ws.send(JSON.stringify(msg));
+
+        getHotfixList();
+        if (lastSelectedHotfix != null) {
+            var msg = { error: "ok", content: lastSelectedHotfix, eventName: "getParameter" }
+            ws.send(JSON.stringify(msg));
+        }
+    };
 
     document.querySelector(".tablinks.last").onclick = function (event) {
         var decision = confirm("Would you like to exit? This will also turn off the proxy!")
@@ -74,9 +103,19 @@ $(window).on("load", function () {
         var value = $("#mergeToggle > input")[0].checked;
         if (value !== null) {
             var msg = { error: "ok", content: value.toString(), eventName: "toggleMerge" }
-            if (ws !== null) 
+            if (ws !== null)
                 ws.send(JSON.stringify(msg));
             console.log("mergeToggle has changed: ", value);
+        }
+    });
+
+    $("#speedrunToggle").on("change", function (e) {
+        var value = $("#speedrunToggle > input")[0].checked;
+        if (value !== null) {
+            var msg = { error: "ok", content: value.toString(), eventName: "toggleSpeedrun" }
+            if (ws !== null)
+                ws.send(JSON.stringify(msg));
+            console.log("speedrunToggle has changed: ", value);
         }
     });
 
@@ -95,7 +134,7 @@ function openTabContent(evt, tabName) {
     evt.currentTarget.className += " active";
 }
 
-var wsOnOpen = function(msg) {
+var wsOnOpen = function (msg) {
     console.log("WebSocket connected...");
     document.getElementById('warningLabel').textContent = ''; // Empty the warning label 
 
@@ -103,54 +142,47 @@ var wsOnOpen = function(msg) {
     getProxySettings();
 }
 
-var wsOnClose = function(msg) {
+var wsOnClose = function (msg) {
     console.log('Socket is closed. Reconnect will be attempted in 1 second.', msg.reason);
     document.getElementById('warningLabel').textContent = 'WebSocket disconnected! Connection can take a bit. Be patient until you see info in the Log below!'; // Empty the warning label 
     ws = null;
-    setTimeout( function () { initWs(); }, 1000);
+    setTimeout(function () { initWs(); }, 1000);
 };
 
-var wsOnError = function(msg) {
+var wsOnError = function (msg) {
     console.log("Websocket Error: ", msg);
     ws.close();
 }
 
-var wsOnMessage = function(e) {
+var wsOnMessage = function (e) {
     let logParagraph = document.getElementById("log");
     try {
-        var resp = JSON.parse(e.data);
-        if (resp.eventName == "LogMessage") {
+        var raw_binary_data = new Uint8Array(e.data);
+        var resp = msgpack.decode(raw_binary_data);
+        if (resp.EventName == "LogMessage") {
             console.log("received log message!!");
             // Set the font color of the specific logging types
             // ok = "green", error = "red", all others = "yellow"
-            styledContent = resp.content.fontcolor( (resp.error == "ok" ? "green" : (resp.error == "error" ? "red" : "yellow")) );
+            styledContent = resp.Content.fontcolor((resp.Error == "ok" ? "green" : (resp.Error == "error" ? "red" : "yellow")));
             logParagraph.innerHTML = styledContent + "<br>" + logParagraph.innerHTML;
-        } 
-        else if (resp.eventName == "hotfixList") {
-            if(resp.content == "null") return;
+        }
+        else if (resp.EventName == "hotfixList") {
+            if (resp.Content == "null") return;
 
             console.log("received hotfix list");
             var d = document.getElementById("hotfixSelection");
-            var hotfixes = JSON.parse(resp.content);
+            var hotfixes = JSON.parse(resp.Content);
 
             clearChildElements("#hotfixSelection")
-
+            let elemCount = 1;
             if (hotfixes != null && hotfixes.length > 0) {
                 hotfixes.forEach(element => {
                     var item = document.createElement("option");
-                    item.innerText = element;
+                    item.innerText = elemCount + ". " + element;
                     item.value = element;
-                    item.addEventListener('dblclick', function(e) {
-                        link = e.originalTarget.value;
-                        try {
-                            if(Boolean(new URL(link))) {
-                                window.open(link, "_blank", "noreferrer noopener")
-                            }
-                            // For some reason you can't actually open files using window.open so I just gave up :)
-                        } catch(e) { return; }
-                    });
-                    
+
                     d.appendChild(item);
+                    elemCount++;
                 });
                 d.onchange = function (e) {
                     lastSelectedHotfix = e.target.value;
@@ -158,8 +190,8 @@ var wsOnMessage = function(e) {
                     ws.send(JSON.stringify(msg));
                 };
             }
-        } 
-        else if (resp.eventName == "parameters") {
+        }
+        else if (resp.EventName == "parameters") {
             var d = document.getElementById("parameters");
 
             clearChildElements("#parameters");
@@ -167,22 +199,43 @@ var wsOnMessage = function(e) {
             var params = document.getElementById("parameters");
             var item = document.createElement("pre");
             formattedParam = "";
-            try { 
-                formattedParam = JSON.stringify(JSON.parse(resp.content), null, 4); 
-            }  catch(e) { formattedParam = resp.content == "null" ? "N/A" : resp.content; }
+            try {
+                formattedParam = JSON.stringify(JSON.parse(resp.Content), null, 4);
+            } catch (e) { formattedParam = resp.Content == "null" ? "N/A" : resp.Content; }
             item.innerText = formattedParam;
             params.appendChild(item);
 
-            if (lastSelectedHotfix != null) 
+            if (lastSelectedHotfix != null)
                 hfs = document.getElementById("hotfixSelection").value = lastSelectedHotfix;
         }
-        else if (resp.eventName == "proxySettings") {
-            var temp = JSON.parse(resp.content);
+        else if (resp.EventName == "proxySettings") {
+            var temp = JSON.parse(resp.Content);
             if (temp !== null) {
                 $("#mergeToggle > input")[0].checked = !temp.replaceHotfixes;
+                $("#speedrunToggle > input")[0].checked = temp.speedrunmode;
+                $("#speedrunToggle > input")[0].disabled = !temp.CanToggleSpeedrun;
+
+                if (temp.CanToggleSpeedrun != true) {
+                    $("#lblSpeedrunMode")[0].innerHTML = "Speedrun Mode (forced until game is closed)";
+                }
+                else {
+                    $("#lblSpeedrunMode")[0].innerHTML = "Speedrun Mode";
+                }
             }
-        } 
-    } 
+        }
+        else if (resp.EventName == "speedrunSetting") {
+            var temp = JSON.parse(resp.Content);
+            if (temp !== null) {
+                $("#speedrunToggle > input")[0].disabled = !temp;
+                if (temp != true) {
+                    $("#lblSpeedrunMode")[0].innerHTML = "Speedrun Mode (forced until game is closed)";
+                }
+                else {
+                    $("#lblSpeedrunMode")[0].innerHTML = "Speedrun Mode";
+                }
+            }
+        }
+    }
     catch (e) {
         console.log(e);
     }
@@ -190,6 +243,7 @@ var wsOnMessage = function(e) {
 
 async function initWs() {
     ws = new WebSocket(wsAdd);
+    ws.binaryType = 'arraybuffer';
     ws.onopen = wsOnOpen;
     ws.onmessage = wsOnMessage;
     ws.onclose = wsOnClose;
@@ -221,4 +275,11 @@ function getProxySettings() {
     ws.send(JSON.stringify(msg));
 }
 
-initWs();
+// Trying to load delay first try of the connection
+// as trying it too early might fail and delay the connection 
+// for an unknown amount of time
+$(window).load(function () {
+    setTimeout(function () {
+        initWs();
+    }, 1000);
+});

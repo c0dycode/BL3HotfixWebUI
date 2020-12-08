@@ -9,8 +9,9 @@
 
 <head>
     <script src="./js/jquery.min.js" defer></script>
+    <script src="./js/msgpack.min.js" defer></script>
     <script src="./js/main.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,17 +19,22 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="icon" type="image/png" href="favicon.ico" />
 </head>
 
 <body>
     <div class="fixed-header">
         <div class="container" style="position: relative;">
             <div class="tab">
-                <button class="tablinks" onclick="openTabContent(event, 'hotfixAndParamsContent')" id="defaultTab">Hotfix
+                <button class="tablinks" onclick="openTabContent(event, 'hotfixAndParamsContent')"
+                    id="defaultTab">Hotfix
                     Settings</button>
                 <button class="tablinks" onclick="openTabContent(event, 'proxySettingsContent')">Proxy Settings</button>
 
-                <label style="color: red;vertical-align: middle;padding-top: 0.5%; padding-left: 15%;font-family: sans-serif;" id="warningLabel">WebSocket disconnected! Connection can take a bit. Be patient until you see info in the Log below!</label>
+                <label
+                    style="color: red;vertical-align: middle;padding-top: 0.5%; padding-left: 15%;font-family: sans-serif;"
+                    id="warningLabel">WebSocket disconnected! Connection can take a bit. Be patient until you see info
+                    in the Log below!</label>
 
                 <button class="tablinks last">Quit</button>
             </div>
@@ -39,9 +45,11 @@
         <div id="hotfixAndParamsContent" class="tabcontent">
             <div class="content">
                 <div class="left">
-                    <strong style="font-size: larger;position: absolute;top: 3%;left:50%;transform: translate(-50%, -50%);">Currently Provided Hotfix Paths</strong>
+                    <strong
+                        style="font-size: larger;position: absolute;top: 3%;left:50%;transform: translate(-50%, -50%);">Currently
+                        Provided Hotfix Paths</strong>
                     <br><br>
-                    <select id="hotfixSelection" size="36">
+                    <select id="hotfixSelection" size="34">
                     </select>
 
                     <div id="hotfixButtonLayout">
@@ -49,12 +57,16 @@
                         <input type="button" value="Add Local Path" id="addLocalButton">
                         <input type="button" value="Delete Selected" id="deleteHotfixURLButton">
 
+                        <input type="button" value="Move Up" id="moveURLUpButton">
+                        <input type="button" value="Move Down" id="moveURLDownButton">
+
                         <input type="button" value="Refresh" id="refreshHotfixURLButton">
                     </div>
                 </div>
 
                 <div class="right">
-                    <strong style="font-size: larger;position: absolute;top: 3%;left:75%;transform: translate(-50%, -50%);">Parameters</strong>
+                    <strong
+                        style="font-size: larger;position: absolute;top: 3%;left:75%;transform: translate(-50%, -50%);">Parameters</strong>
                     <br><br>
                     <div id="parameters"></div>
                 </div>
@@ -72,6 +84,17 @@
                         <span class="slider"></span>
                     </label>
                     <label for="mergeToggle" style="vertical-align: middle;padding-top: 5px;">Merge</label>
+                    <br>
+                    <br>
+                    <br>
+                    <label id="lblSpeedrunMode" name="lblSpeedrunMode">Speedrun Mode</label>
+                    <br>
+                    <label for="speedrunToggle" style="vertical-align: middle;padding-top: 5px;">Off</label>
+                    <label class="switch" name="speedrunToggle" id="speedrunToggle">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <label for="speedrunToggle" style="vertical-align: middle;padding-top: 5px;">On</label>
                 </div>
             </div>
         </div>
