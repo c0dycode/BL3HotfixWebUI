@@ -111,6 +111,14 @@ body {
     position: relative;
 }
 
+#versionHeader {
+    vertical-align: bottom;
+    color: lawngreen;
+    margin: inherit;
+    font-weight: bold !important;
+    float: inherit;
+}
+
 #hotfixSelection {
     background-color: rgba(64, 64, 64, 0.75);
     color: white;
@@ -121,6 +129,22 @@ body {
     position: relative;
     overflow: scroll;
     border-color: transparent;
+}
+
+#mailItemSelection {
+    background-color: rgba(64, 64, 64, 0.75);
+    color: white;
+    width: 50.5%;
+    height: 20vh;
+    border-radius: 12px;
+    margin-left: 1%;
+    position: relative;
+    overflow: scroll;
+    border-color: transparent;
+}
+
+#serialNumberInputLabel {
+    margin: inherit;
 }
 
 .left strong {
@@ -198,6 +222,25 @@ body {
     display: flex;
 }
 
+#serialNumberInput {
+    min-width: 20vw;
+    width: 30vw;
+}
+
+#btnAddSerialNumber {
+    background-color: greenyellow;
+    border-radius: 12px;
+    width: 95px;
+    border-color: transparent;
+}
+
+#btnRemoveSerialNumber {
+    background-color: red !important;
+    border-radius: 12px;
+    width: 95px;
+    border-color: transparent;
+}
+
 #clearButton {
     background-color: greenyellow;
     border-radius: 12px;
@@ -230,6 +273,15 @@ body {
     opacity: 0;
     width: 0;
     height: 0;
+}
+
+.about h3 {
+    margin-left: 1vw;
+}
+
+.about p {
+    color: lawngreen;
+    margin-left: 1vw;
 }
 
 .settings {

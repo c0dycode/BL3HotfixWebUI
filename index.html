@@ -8,6 +8,7 @@
 <!--<![endif]-->
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/pako@1.0.10/dist/pako.min.js" defer></script>
     <script src="./js/jquery.min.js" defer></script>
     <script src="./js/msgpack.min.js" defer></script>
     <script src="./js/main.js" defer></script>
@@ -29,13 +30,20 @@
                 <button class="tablinks" onclick="openTabContent(event, 'hotfixAndParamsContent')"
                     id="defaultTab">Hotfix
                     Settings</button>
+
+                <button class="tablinks" onclick="openTabContent(event, 'itemTradeContent')">Receive Items</button>
                 <button class="tablinks" onclick="openTabContent(event, 'proxySettingsContent')">Proxy Settings</button>
+                <button class="tablinks" onclick="openTabContent(event, 'aboutPageContent')">About</button>
+                <button class="tablinks"><a target="_blank" rel="noopener noreferrer"
+                        href="https://github.com/BLCM/BLCMods/wiki">Get Mods</a>
+                </button>
 
                 <label
-                    style="color: red;vertical-align: middle;padding-top: 0.5%; padding-left: 15%;font-family: sans-serif;"
+                    style="color: red;vertical-align: middle;padding-top: 0.5%; padding-left: 5vw;font-family: sans-serif;"
                     id="warningLabel">WebSocket disconnected! Connection can take a bit. Be patient until you see info
                     in the Log below!</label>
 
+                <label class="tablinks" id="versionHeader"></label>
                 <button class="tablinks last">Quit</button>
             </div>
         </div>
@@ -73,6 +81,25 @@
             </div>
         </div>
 
+        <div id="itemTradeContent" class="tabcontent">
+            <div class="content">
+                <div id="itemTrade" class="content settings">
+                    <strong>Receive Items</strong>
+                    <br><br>
+                    <label style="margin: inherit;">Items to receive via Ingame-Mail (F4 ingame)</label>
+                    <br><br>
+                    <select id="mailItemSelection" size="10"></select>
+                    <br>
+                    <br>
+                    <label for="serialNumberInput" id="serialNumberInputLabel">SerialNumber:</label>
+                    <input type="text" id="serialNumberInput" width="30vw"
+                        placeholder="e.g. AwAAAABsjoC8z5lBk2MaNwMCc/KINiYKLr4QAgAAAAAAlDEA">
+                    <input type="button" id="btnAddSerialNumber" value="Add">
+                    <input type="button" id="btnRemoveSerialNumber" value="Delete">
+                </div>
+            </div>
+        </div>
+
         <div id="proxySettingsContent" class="tabcontent">
             <div id="proxySettings" class="content settings">
                 <strong>Proxy Settings</strong>
@@ -96,6 +123,63 @@
                     </label>
                     <label for="speedrunToggle" style="vertical-align: middle;padding-top: 5px;">On</label>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="aboutPageContent" class="tabcontent">
+        <div class="content">
+            <div id="about" class="content settings about">
+                <h3>About</h3>
+                <p>First of all: Thank you for using B3HM! Check out the <a
+                        href="https://github.com/c0dycode/BL3HotfixWebUI/wiki/B3HM-Wiki">wiki</a> if you have any
+                    question before reaching out!</p>
+                <p>B3HM is a standalone tool to manage hotfix mods for Borderlands 3.</p>
+                <p>It does so by "intercepting" GearBox's hotfixes, altering them and THEN "deliver" them to the game.
+                    That means an internet connection IS REQUIRED!</p>
+                <h3>Disclaimer:</h3>
+                <p>I am not responsible for any issues/damages that could happen to your game/account/savegame(s)/pc
+                    if you use this tool.</p>
+                <p>B3HM allows you to "spawn" in items ("Receive Items" tab) via the ingame "Mail" option.</p>
+                <p>By using that option you agree to not abuse this system to spam people, sell "generated" items
+                    to
+                    others or any other way.</p>
+                <p>You also should only use this responsibly and not ruin other peoples experience with the game. So
+                    make sure the people you play with KNOW that you're using mods!</p>
+                <h3>More:</h3>
+                <ul>
+                    <li>
+                        <p>Author: <img style="margin-bottom: -0.5vh;" alt="GitHub followers"
+                                src="https://img.shields.io/github/followers/c0dycode?style=social"> GitHub:
+                            <a href="https://github.com/c0dycode">c0dycode</a>
+                        </p>
+                    </li>
+                    <li>
+                        <p>If you'd like to support me, feel free to do so here:
+                            <a
+                                href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CRVHLK9MURS9Q">
+                                <img style="margin-bottom: -0.5vh;"
+                                    src="https://img.shields.io/badge/Donate-PayPal-green.svg"></img>
+                            </a>
+                        </p>
+                        <p>If you consider donating, thank you very much! It is very much appreciated!</p>
+                    </li>
+                </ul>
+                <h3>Special thanks:</h3>
+                <ul>
+                    <li>
+                        <p>Apocalyptech: For assisting with various tasks.</p>
+                    </li>
+                    <li>
+                        <p>SSpyR and his community: For beta testing.</p>
+                    </li>
+                    <li>
+                        <p>FromDarkHell: For work on the webui-design.</p>
+                    </li>
+                    <li>
+                        <p>Everyone else that was also involved in testing!</p>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

@@ -1,10 +1,12 @@
 /// <reference types="jquery" />
 
 const wsAdd = "ws://127.0.0.1:9998/ws";
+const uiVersion = "1.00";
 
 var ws
 var lastSelectedHotfix;
 var webSocketIntervalID;
+var proxyVersion;
 
 var log = document.getElementById("log");
 
@@ -49,6 +51,25 @@ $(window).on("load", function () {
         getHotfixList();
         if (lastSelectedHotfix != null) {
             var msg = { error: "ok", content: lastSelectedHotfix, eventName: "getParameter" }
+            ws.send(JSON.stringify(msg));
+        }
+    };
+
+    // Add MailItem SerialNumber
+    document.querySelector("#btnAddSerialNumber").onclick = function (event) {
+        sn = document.querySelector("#serialNumberInput").value;
+        if (sn != null) {
+            var msg = { error: "ok", content: sn, eventName: "addMailItem" }
+            ws.send(JSON.stringify(msg));
+            document.querySelector("#serialNumberInput").value = "";
+        }
+    };
+
+    // Remove MailItem SerialNumber
+    document.querySelector("#btnRemoveSerialNumber").onclick = function (event) {
+        sn = document.querySelector("#mailItemSelection").value;
+        if (sn != null) {
+            var msg = { error: "ok", content: sn, eventName: "removeMailItem" }
             ws.send(JSON.stringify(msg));
         }
     };
@@ -138,7 +159,9 @@ var wsOnOpen = function (msg) {
     console.log("WebSocket connected...");
     document.getElementById('warningLabel').textContent = ''; // Empty the warning label 
 
+    getProxyVersion();
     getHotfixList();
+    getItemSerials();
     getProxySettings();
 }
 
@@ -160,16 +183,43 @@ var wsOnMessage = function (e) {
         var raw_binary_data = new Uint8Array(e.data);
         var resp = msgpack.decode(raw_binary_data);
         if (resp.EventName == "LogMessage") {
-            console.log("received log message!!");
             // Set the font color of the specific logging types
             // ok = "green", error = "red", all others = "yellow"
-            styledContent = resp.Content.fontcolor((resp.Error == "ok" ? "green" : (resp.Error == "error" ? "red" : "yellow")));
+            styledContent = resp.Content.toString().fontcolor((resp.Error == "ok" ? "green" : (resp.Error == "error" ? "red" : "yellow")));
             logParagraph.innerHTML = styledContent + "<br>" + logParagraph.innerHTML;
+        }
+        else if (resp.EventName == "proxyVersion") {
+            proxyVersion = resp.Content.toString();
+            let versionHeader = document.getElementById("versionHeader");
+            if (proxyVersion == uiVersion) {
+                versionHeader.innerHTML = ("Version: " + proxyVersion).fontcolor("green");
+            }
+            else {
+                versionHeader.innerHTML = ("Version: " + proxyVersion + " (Most recent version: " + uiVersion + "!)").fontcolor("red");
+            }
+        }
+        else if (resp.EventName == "itemSerialsList") {
+            clearChildElements("#mailItemSelection");
+            if (resp.Content == "null") return;
+
+            var d = document.getElementById("mailItemSelection");
+            var serials = JSON.parse(resp.Content);
+
+            let elemCount = 1;
+            if (serials != null && serials.length > 0) {
+                serials.forEach(element => {
+                    var item = document.createElement("option");
+                    item.innerText = elemCount + ". " + element;
+                    item.value = element;
+
+                    d.appendChild(item);
+                    elemCount++;
+                });
+            }
         }
         else if (resp.EventName == "hotfixList") {
             if (resp.Content == "null") return;
 
-            console.log("received hotfix list");
             var d = document.getElementById("hotfixSelection");
             var hotfixes = JSON.parse(resp.Content);
 
@@ -200,8 +250,9 @@ var wsOnMessage = function (e) {
             var item = document.createElement("pre");
             formattedParam = "";
             try {
-                formattedParam = JSON.stringify(JSON.parse(resp.Content), null, 4);
-            } catch (e) { formattedParam = resp.Content == "null" ? "N/A" : resp.Content; }
+                let unpacked = window.pako.inflate(resp.Content, { to: 'string' });
+                formattedParam = JSON.stringify(JSON.parse(unpacked), null, 4);
+            } catch (e) { formattedParam = unpacked == "null" ? "N/A" : unpacked; }
             item.innerText = formattedParam;
             params.appendChild(item);
 
@@ -266,11 +317,29 @@ function getHotfixList() {
     ws.send(JSON.stringify(msg));
 }
 
+function getItemSerials() {
+    var msg = {
+        error: "ok",
+        content: "",
+        eventName: "getMailItems"
+    }
+    ws.send(JSON.stringify(msg));
+}
+
 function getProxySettings() {
     var msg = {
         error: "ok",
         content: "",
         eventName: "getProxySettings"
+    }
+    ws.send(JSON.stringify(msg));
+}
+
+function getProxyVersion() {
+    var msg = {
+        error: "ok",
+        content: "",
+        eventName: "getProxyVersion"
     }
     ws.send(JSON.stringify(msg));
 }
