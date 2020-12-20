@@ -7,9 +7,9 @@ var ws
 var lastSelectedHotfix;
 var webSocketIntervalID;
 var proxyVersion;
+var presetsVisible = false;
 
 var log = document.getElementById("log");
-
 $(window).on("load", function () {
     var clearbtn = document.getElementById("clearButton");
     clearbtn.onclick = function () { clearChildElements("#log") }
@@ -19,6 +19,16 @@ $(window).on("load", function () {
         item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
         log.append(item);
     }
+
+    // Close the Preset dropdown if we click somewhere else that's unrelated
+    $('html').on("click", function (e) {
+        if (presetsVisible
+            && e.target != document.getElementById("presetBtn")
+            && e.target != document.getElementById("myInput")) {
+            togglePresetView();
+            presetsVisible = false;
+        }
+    });
 
     // ADD REMOTE HotfixURL
     document.querySelector("#addURLButton").onclick = function (event) {
@@ -53,6 +63,34 @@ $(window).on("load", function () {
             var msg = { error: "ok", content: lastSelectedHotfix, eventName: "getParameter" }
             ws.send(JSON.stringify(msg));
         }
+    };
+
+    // ADD Preset
+    document.querySelector("#addPresetButton").onclick = function (event) {
+        var tmp = document.getElementById("presetBtn");
+        var currentSlection = tmp.innerHTML.toString();
+
+        var presetName;
+        if (currentSlection !== null) {
+            presetName = prompt("Please enter a name for this preset!", currentSlection);
+        }
+        else {
+            presetName = prompt("Please enter a name for this preset!", "");
+        }
+        if (presetName != null) {
+            var d = document.getElementById("hotfixSelection");
+            var presetLinks = []
+            d.childNodes.forEach(element => {
+                if (element.value !== undefined) {
+                    presetLinks.push(element.value);
+                }
+            });
+            var presetData = { PresetName: presetName, Paths: presetLinks };
+
+            var msg = { error: "ok", content: JSON.stringify(presetData), eventName: "addPreset" }
+            ws.send(JSON.stringify(msg));
+        }
+        getAvailablePresets();
     };
 
     // Add MailItem SerialNumber
@@ -159,6 +197,7 @@ var wsOnOpen = function (msg) {
     console.log("WebSocket connected...");
     document.getElementById('warningLabel').textContent = ''; // Empty the warning label 
 
+    getAvailablePresets();
     getProxyVersion();
     getHotfixList();
     getItemSerials();
@@ -187,6 +226,35 @@ var wsOnMessage = function (e) {
             // ok = "green", error = "red", all others = "yellow"
             styledContent = resp.Content.toString().fontcolor((resp.Error == "ok" ? "green" : (resp.Error == "error" ? "red" : "yellow")));
             logParagraph.innerHTML = styledContent + "<br>" + logParagraph.innerHTML;
+        }
+        else if (resp.EventName == "presetList") {
+            data = JSON.parse(resp.Content.toString())
+            if (data !== null) {
+                var d = document.getElementById("presetCollection");
+
+                clearChildElements("#presetCollection")
+                let elemCount = 1;
+                if (data != null && data.length > 0) {
+                    data.forEach(element => {
+                        var item = document.createElement("label");
+                        item.innerText = elemCount + ". " + element;
+                        item.value = element;
+
+                        item.onclick = function (e) {
+                            var tmp = document.getElementById("presetBtn");
+                            tmp.innerHTML = e.target.value;
+
+                            var msg = { error: "ok", content: e.target.value, eventName: "selectedPresetChanged" }
+                            ws.send(JSON.stringify(msg));
+
+                            togglePresetView();
+                            getHotfixList();
+                        }
+                        d.appendChild(item);
+                        elemCount++;
+                    });
+                }
+            }
         }
         else if (resp.EventName == "proxyVersion") {
             proxyVersion = resp.Content.toString();
@@ -272,6 +340,7 @@ var wsOnMessage = function (e) {
                 else {
                     $("#lblSpeedrunMode")[0].innerHTML = "Speedrun Mode";
                 }
+                $("#presetBtn")[0].innerHTML = temp.lastPreset;
             }
         }
         else if (resp.EventName == "speedrunSetting") {
@@ -308,6 +377,36 @@ function clearChildElements(nodeName) {
     }
 }
 
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function togglePresetView() {
+    document.getElementById("myInput").value = "";
+    filterFunction();
+
+    if (!presetsVisible) {
+        presetsVisible = true;
+    } else {
+        presetsVisible = false;
+    }
+    document.getElementById("presetDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("presetDropdown");
+    a = div.getElementsByTagName("label");
+    for (i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
+}
+
 function getHotfixList() {
     var msg = {
         error: "ok",
@@ -322,6 +421,15 @@ function getItemSerials() {
         error: "ok",
         content: "",
         eventName: "getMailItems"
+    }
+    ws.send(JSON.stringify(msg));
+}
+
+function getAvailablePresets() {
+    var msg = {
+        error: "ok",
+        content: "",
+        eventName: "getAvailablePresets"
     }
     ws.send(JSON.stringify(msg));
 }

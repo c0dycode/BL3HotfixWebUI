@@ -90,6 +90,7 @@ html {
 
 body {
     color: white;
+    overflow: visible;
 }
 
 .bodyContent {
@@ -119,6 +120,23 @@ body {
     float: inherit;
 }
 
+#presetContainer {
+    position: absolute;
+    border-radius: 5px;
+    border-width: thick;
+    margin-top: 1vh;
+    margin-left: 2vw;
+    max-height: 2vh;
+    height: 2vh;
+    display: contents;
+}
+
+#presetSelection {
+    min-width: 10vw;
+    width: 10vw;
+    z-index: 2;
+}
+
 #hotfixSelection {
     background-color: rgba(64, 64, 64, 0.75);
     color: white;
@@ -129,6 +147,7 @@ body {
     position: relative;
     overflow: scroll;
     border-color: transparent;
+    z-index: 1;
 }
 
 #mailItemSelection {
@@ -212,7 +231,7 @@ body {
 }
 
 #footer {
-    width: 99%;
+    width: 98%;
     max-height: 22%;
     bottom: 0px;
     margin-left: 0.75%;
@@ -345,3 +364,100 @@ input:checked+.slider:before {
     -ms-transform: translateX(26px);
     transform: translateX(26px);
 }
+
+/* Filter-Dropdown */
+
+#presetsLabel {
+    position: absolute;
+    margin-left: 0.8vw;
+    top: -5vh;
+}
+
+.dropbtn {
+    position: absolute;
+    background-color: white;
+    color: black;
+    /* padding: 16px; */
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    height: 2.5vh;
+    width: 14vw;
+    max-width: 14vw;
+    top: -3vh;
+    margin-left: 0.8vw;
+    border-radius: 12px;
+}
+
+/* .dropbtn:hover, .dropbtn:focus {
+    background-color: orange;
+} */
+
+#myInput {
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    font-size: 16px;
+    /* padding: 10px 20px 12px 45px; */
+    border: none;
+    border-bottom: 1px solid #ddd;
+    width: 14vw;
+    position: sticky;
+    top: -10px;
+}
+
+#myInput:focus {
+    outline: 3px solid #ddd;
+}
+
+.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    left: 0.8vw;
+    background-color: #f6f6f6;
+    /* min-width: 230px; */
+    overflow-x: auto;
+    overflow-y: scroll;
+    /* border: 1px solid #ddd; */
+    max-width: 28vw;
+    z-index: 2;
+}
+
+.dropdown-content label {
+    color: black;
+    /* padding: 12px 16px; */
+    padding: 5px 5px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown label:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display: block;
+}
+
+/* Special adjustments for MS Edge */
+
+@supports (-ms-ime-align:auto) {
+    .content {
+        margin-left: 0.7vw;
+    }
+    .right {
+        margin-left: 1.1vw;
+    }
+    .dropbtn {
+        top: -4vh;
+        margin-left: -1.2vw;
+    }
+    .dropdown-content {
+        left: -1.2vw;
+    }
+}
+
+/* Filter-Dropdown END*/
