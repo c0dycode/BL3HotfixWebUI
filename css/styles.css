@@ -7,12 +7,23 @@
 */
 
 html {
+    height: 100%;
+
+    /* Center and scale the image nicely */
     background-image: url('https://borderlands.com/images/_generated/1x/images/news/header-bg.jpg');
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
     background-color: #404040;
+
     font-family: Helvetica;
 }
+
+a {
+    color: #5595ff;
+}
+
 
 /* Headers & Footers */
 
@@ -30,6 +41,7 @@ html {
 .fixed-footer {
     bottom: 0;
 }
+
 
 /* Style the tab */
 
@@ -148,6 +160,7 @@ body {
     overflow: scroll;
     border-color: transparent;
     z-index: 1;
+    margin-bottom: 5px;
 }
 
 #mailItemSelection {
@@ -204,7 +217,7 @@ body {
 #hotfixButtonLayout input[type="button"] {
     background-color: goldenrod;
     position: relative;
-    margin-left: 2ex;
+    margin-left: 1.2%;
     margin-top: 1ex;
     border-color: transparent;
     border-radius: 12px;
@@ -234,6 +247,14 @@ body {
     right: 10px;
     position: absolute !important;
     border-color: transparent;
+}
+
+#warningLabel {
+    color: red;
+    vertical-align: middle;
+    padding-top: 0.5%; 
+    padding-left: 5vw;
+    font-family: sans-serif;
 }
 
 #footer {
@@ -271,6 +292,7 @@ body {
     border-radius: 12px;
     width: 95px;
     border-color: transparent;
+    margin-left: 1px;
 }
 
 #log {
@@ -302,10 +324,10 @@ body {
 
 .about h3 {
     margin-left: 1vw;
+    color: white;
 }
 
 .about p {
-    color: lawngreen;
     margin-left: 1vw;
 }
 
@@ -379,6 +401,11 @@ input:checked+.slider:before {
     top: -5vh;
 }
 
+#presetBtn {
+    margin-left: calc(10% + 15px);
+    margin-top: -5px;
+}
+
 .dropbtn {
     position: absolute;
     background-color: white;
@@ -395,20 +422,17 @@ input:checked+.slider:before {
     border-radius: 12px;
 }
 
-/* .dropbtn:hover, .dropbtn:focus {
-    background-color: orange;
-} */
 
 #myInput {
     box-sizing: border-box;
     background-repeat: no-repeat;
     font-size: 16px;
-    /* padding: 10px 20px 12px 45px; */
     border: none;
     border-bottom: 1px solid #ddd;
     width: 14vw;
     position: sticky;
     top: -10px;
+    text-align: center;
 }
 
 #myInput:focus {
@@ -422,14 +446,14 @@ input:checked+.slider:before {
 .dropdown-content {
     display: none;
     position: absolute;
-    left: 0.8vw;
+    left: calc(10% + 15px);
     background-color: #f6f6f6;
-    /* min-width: 230px; */
     overflow-x: auto;
-    overflow-y: scroll;
-    /* border: 1px solid #ddd; */
+    overflow-y: auto;
     max-width: 28vw;
     z-index: 2;
+    top: -9px;
+    border-radius: 12px;
 }
 
 .dropdown-content label {
