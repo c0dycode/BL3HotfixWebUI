@@ -8,22 +8,18 @@
 
 html {
     height: 100%;
-
     /* Center and scale the image nicely */
     background-image: url('https://borderlands.com/images/_generated/1x/images/news/header-bg.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-
     background-color: #404040;
-
     font-family: Helvetica;
 }
 
 a {
     color: #5595ff;
 }
-
 
 /* Headers & Footers */
 
@@ -41,7 +37,6 @@ a {
 .fixed-footer {
     bottom: 0;
 }
-
 
 /* Style the tab */
 
@@ -252,7 +247,7 @@ body {
 #warningLabel {
     color: red;
     vertical-align: middle;
-    padding-top: 0.5%; 
+    padding-top: 0.5%;
     padding-left: 5vw;
     font-family: sans-serif;
 }
@@ -422,7 +417,6 @@ input:checked+.slider:before {
     border-radius: 12px;
 }
 
-
 #myInput {
     box-sizing: border-box;
     background-repeat: no-repeat;
@@ -481,12 +475,15 @@ input:checked+.slider:before {
     .right {
         margin-left: 1.1vw;
     }
+    #presetBtn {
+        margin-left: calc(10% + 80px) !important;
+    }
     .dropbtn {
         top: -4vh;
-        margin-left: -1.2vw;
     }
     .dropdown-content {
-        left: -1.2vw;
+        top: -1.99vh;
+        left: 4.2vw;
     }
 }
 
