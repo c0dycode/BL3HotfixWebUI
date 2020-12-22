@@ -142,6 +142,19 @@ $(window).on("load", function () {
         }
     };
 
+    // Toggle HotfixURL button
+    document.querySelector("#toggleHotfixButton").onclick = function (event) {
+        lastSelectedHotfix = document.querySelector("#hotfixSelection").value;
+        let index = document.querySelector("#hotfixSelection").selectedIndex;
+
+        if (index >= 0) {
+            var msg = { error: "ok", content: index.toString(), eventName: "toggleHotfixURL" }
+            ws.send(JSON.stringify(msg));
+
+            getHotfixList();
+        }
+    };
+
     document.querySelector(".tablinks.last").onclick = function (event) {
         var decision = confirm("Would you like to exit? This will also turn off the proxy!")
         if (decision == true) {

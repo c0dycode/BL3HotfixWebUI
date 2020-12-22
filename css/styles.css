@@ -222,6 +222,12 @@ body {
     border-color: transparent;
 }
 
+#toggleHotfixButton {
+    background-color: mediumslateblue !important;
+    border-radius: 12px;
+    border-color: transparent;
+}
+
 #refreshHotfixURLButton {
     background-color: greenyellow !important;
     border-radius: 12px;
