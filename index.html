@@ -1,208 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<!-- <html class="no-js"> -->
-<!--<![endif]-->
-
-<head>
-    <script src="https://cdn.jsdelivr.net/npm/pako@1.0.10/dist/pako.min.js" defer></script>
-    <script src="./js/jquery.min.js" defer></script>
-    <script src="./js/msgpack.min.js" defer></script>
-    <script src="./js/main.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>BL3 Hotfix Merger</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="icon" type="image/png" href="favicon.ico" />
-</head>
-
-<body>
-    <div class="fixed-header">
-        <div class="container" style="position: relative;">
-            <div class="tab">
-                <button class="tablinks" onclick="openTabContent(event, 'hotfixAndParamsContent')"
-                    id="defaultTab">Hotfix
-                    Settings</button>
-
-                <button class="tablinks" onclick="openTabContent(event, 'itemTradeContent')">Receive Items</button>
-                <button class="tablinks" onclick="openTabContent(event, 'proxySettingsContent')">Proxy Settings</button>
-                <button class="tablinks" onclick="openTabContent(event, 'aboutPageContent')">About</button>
-                <button class="tablinks"><a target="_blank" rel="noopener noreferrer"
-                        href="https://github.com/BLCM/bl3mods/wiki">Get Mods</a>
-                </button>
-
-                <label
-                    style="color: red;vertical-align: middle;padding-top: 0.5%; padding-left: 5vw;font-family: sans-serif;"
-                    id="warningLabel">WebSocket disconnected! Connection can take a bit. Be patient until you see info
+    
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <!-- <html class="no-js"> -->
+    <!--<![endif]-->
+    
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/pako@1.0.10/dist/pako.min.js" defer></script>
+        <script src="./js/jquery.min.js" defer></script>
+        <script src="./js/msgpack.min.js" defer></script>
+        <script src="./js/main.js" defer></script>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>BL3 Hotfix Merger</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./css/styles.css">
+        <link rel="icon" type="image/png" href="favicon.ico" />
+    </head>
+    
+    <body>
+        <div class="fixed-header">
+            <div class="container" style="position: relative;">
+                <div class="tab">
+                    <button class="tablinks" onclick="openTabContent(event, 'hotfixAndParamsContent')" id="defaultTab">Hotfix Settings</button>
+                    
+                    <button class="tablinks" onclick="openTabContent(event, 'itemTradeContent')">Receive Items</button>
+                    <button class="tablinks" onclick="openTabContent(event, 'proxySettingsContent')">Proxy Settings</button>
+                    <button class="tablinks" onclick="openTabContent(event, 'aboutPageContent')">About</button>
+                    <button class="tablinks"><a target="_blank" rel="noopener noreferrer"
+                    href="https://github.com/BLCM/bl3mods/wiki">Get Mods</a>
+                    </button>
+                    
+                    <label id="warningLabel">WebSocket disconnected! Connection can take a bit. Be patient until you see info
                     in the Log below!</label>
-
-                <label class="tablinks" id="versionHeader"></label>
-                <button class="tablinks last">Quit</button>
+                    
+                    <label class="tablinks" id="versionHeader"></label>
+                    <button class="tablinks last">Quit</button>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="container">
-        <div id="hotfixAndParamsContent" class="tabcontent">
-            <div class="content">
-                <div class="left">
-                    <label id="presetsLabel" for="presetBtn">Presets:</label>
-                    <div id="presetContainer" class="dropdown">
-                        <button onclick="togglePresetView()" class="dropbtn" id="presetBtn">Select a Preset!</button>
-                        <div id="presetDropdown" class="dropdown-content">
-                            <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                            <div id="presetCollection">
-                            </div>
-                        </div>
-                    </div>
-                    <strong
+        
+        <div class="container">
+            <div id="hotfixAndParamsContent" class="tabcontent">
+                <div class="content">
+                    <div class="left">
+                        <span>
+                            <p id="presetsLabel" for="presetBtn"><strong>Presets:</strong></p>
+                            <span id="presetContainer" class="dropdown">
+                                <button onclick="togglePresetView()" class="dropbtn" id="presetBtn"></button>
+                                <div id="presetDropdown" class="dropdown-content">
+                                    <input type="text" placeholder="Search" id="myInput" onkeyup="filterFunction()">
+                                    <div id="presetCollection">
+                                    </div>
+                                </div>
+                            </span>
+                        </span>
+                        
+                        <strong
                         style="font-size: larger;position: absolute;top: 3%;left:50%;transform: translate(-50%, -50%);">Currently
                         Provided Hotfix Paths</strong>
-                    <br><br>
-                    <select id="hotfixSelection" size="34">
-                    </select>
-
-                    <div id="hotfixButtonLayout">
-                        <input type="button" value="Add URL" id="addURLButton">
-                        <input type="button" value="Add Local Path" id="addLocalButton">
-                        <input type="button" value="Delete Selected" id="deleteHotfixURLButton">
-
-                        <input type="button" value="Move Up" id="moveURLUpButton">
-                        <input type="button" value="Move Down" id="moveURLDownButton">
-                        <input type="button" value="(De-)Activate" id="toggleHotfixButton">
-                        <input type="button" value="Save Preset" id="addPresetButton">
-
-                        <input type="button" value="Refresh" id="refreshHotfixURLButton">
+                        <br><br>
+                        <select id="hotfixSelection" size="34">
+                        </select>
+                        
+                        <div id="hotfixButtonLayout">
+                            <input type="button" value="Add URL" id="addURLButton">
+                            <input type="button" value="Add Local Path" id="addLocalButton">
+                            <input type="button" value="Delete Selected" id="deleteHotfixURLButton">
+                            
+                            <input type="button" value="Move Up" id="moveURLUpButton">
+                            <input type="button" value="Move Down" id="moveURLDownButton">
+                            <input type="button" value="(De-)Activate" id="toggleHotfixButton">
+                            <input type="button" value="Save Preset" id="addPresetButton">
+                            
+                            <input type="button" value="Refresh" id="refreshHotfixURLButton">
+                        </div>
+                    </div>
+                    
+                    <div class="right">
+                        
+                        <div class="right">
+                            <strong style="font-size: larger;position: absolute;top: 3%;left:75%;transform: translate(-50%, -50%);">Parameters</strong>
+                            <br><br>
+                            <div id="parameters"></div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="right">
-                    <strong
-                        style="font-size: larger;position: absolute;top: 3%;left:75%;transform: translate(-50%, -50%);">Parameters</strong>
-                    <br><br>
-                    <div id="parameters"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="itemTradeContent" class="tabcontent">
-            <div class="content">
-                <div id="itemTrade" class="content settings">
-                    <strong>Receive Items</strong>
-                    <br><br>
-                    <label style="margin: inherit;">Items to receive via Ingame-Mail (F4 ingame)</label>
-                    <br><br>
-                    <select id="mailItemSelection" size="10"></select>
-                    <br>
-                    <br>
-                    <label for="serialNumberInput" id="serialNumberInputLabel">SerialNumber:</label>
-                    <input type="text" id="serialNumberInput" width="30vw"
+                
+                <div id="itemTradeContent" class="tabcontent">
+                    <div class="content">
+                        <div id="itemTrade" class="content settings">
+                            <strong>Receive Items</strong>
+                            <br><br>
+                            <label style="margin: inherit;">Items to receive via Ingame-Mail (F4 ingame)</label>
+                            <br><br>
+                        <select id="mailItemSelection" size="10"></select>
+                        <br>
+                        <br>
+                        <label for="serialNumberInput" id="serialNumberInputLabel">SerialNumber:</label>
+                        <input type="text" id="serialNumberInput" width="30vw"
                         placeholder="e.g. AwAAAABsjoC8z5lBk2MaNwMCc/KINiYKLr4QAgAAAAAAlDEA">
-                    <input type="button" id="btnAddSerialNumber" value="Add">
-                    <input type="button" id="btnRemoveSerialNumber" value="Delete">
+                        <input type="button" id="btnAddSerialNumber" value="Add">
+                        <input type="button" id="btnRemoveSerialNumber" value="Delete">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="proxySettingsContent" class="tabcontent">
+                <div id="proxySettings" class="content settings">
+                    <strong>Proxy Settings</strong>
+                    <br><br>
+                    <div class="setting">
+                        <label for="mergeToggle" style="vertical-align: middle;padding-top: 5px;">Replace</label>
+                        <label class="switch" name="mergeToggle" id="mergeToggle">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <label for="mergeToggle" style="vertical-align: middle;padding-top: 5px;">Merge</label>
+                        <br>
+                        <br>
+                        <br>
+                        <label id="lblSpeedrunMode" name="lblSpeedrunMode">Speedrun Mode</label>
+                        <br>
+                        <label for="speedrunToggle" style="vertical-align: middle;padding-top: 5px;">Off</label>
+                        <label class="switch" name="speedrunToggle" id="speedrunToggle">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <label for="speedrunToggle" style="vertical-align: middle;padding-top: 5px;">On</label>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div id="proxySettingsContent" class="tabcontent">
-            <div id="proxySettings" class="content settings">
-                <strong>Proxy Settings</strong>
-                <br><br>
-                <div class="setting">
-                    <label for="mergeToggle" style="vertical-align: middle;padding-top: 5px;">Replace</label>
-                    <label class="switch" name="mergeToggle" id="mergeToggle">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label for="mergeToggle" style="vertical-align: middle;padding-top: 5px;">Merge</label>
-                    <br>
-                    <br>
-                    <br>
-                    <label id="lblSpeedrunMode" name="lblSpeedrunMode">Speedrun Mode</label>
-                    <br>
-                    <label for="speedrunToggle" style="vertical-align: middle;padding-top: 5px;">Off</label>
-                    <label class="switch" name="speedrunToggle" id="speedrunToggle">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label for="speedrunToggle" style="vertical-align: middle;padding-top: 5px;">On</label>
+        
+        <div id="aboutPageContent" class="tabcontent">
+            <div class="content">
+                <div id="about" class="content settings about">
+                    <h3>About</h3>
+                    <p>
+                        First of all: Thank you for using B3HM! Check out the <a href="https://github.com/c0dycode/BL3HotfixWebUI/wiki/B3HM-Wiki">wiki</a> if you have any question before reaching out!<br>
+                        B3HM is a standalone tool to manage hotfix mods for Borderlands 3.<br>
+                        It does so by "intercepting" GearBox's hotfixes, altering them and THEN "deliver" them to the game. That means an internet connection IS REQUIRED!
+                        <h3>Disclaimer:</h3>
+                        
+                    </p>
+                    
+                    <p>
+                        I am not responsible for any issues/damages that could happen to your game/account/savegame(s)/pc
+                        if you use this tool.<br>
+                        B3HM allows you to "spawn" in items ("Receive Items" tab) via the ingame "Mail" option.<br>
+                        By using that option you agree to not abuse this system to spam people, sell "generated" items to
+                        others or any other way.<br>
+                        You also should only use this responsibly and not ruin other peoples experience with the game. So
+                        make sure the people you play with KNOW that you're using mods!
+                    </p>
+                    <h3>More:</h3>
+                    <ul>
+                        <li>
+                            <p>Author:
+                                <a href="https://github.com/c0dycode">
+                                    c0dycode
+                                    <img style="margin-bottom: -0.5vh;" alt="GitHub followers"
+                                    src="https://img.shields.io/github/followers/c0dycode?style=social">
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>If you'd like to support me, feel free to do so here:
+                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CRVHLK9MURS9Q">
+                                    <img style="margin-bottom: -0.5vh;" src="https://img.shields.io/badge/Donate-PayPal-green.svg"></img>
+                                </a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>If you consider donating, thank you very much! It is very much appreciated!</p>
+                        </li>
+                    </ul>
+                    <h3>Special thanks:</h3>
+                    <ul>
+                        <li>
+                            <p>Apocalyptech: For assisting with various tasks.</p>
+                        </li>
+                        <li>
+                            <p>SSpyR and his community: For beta testing.</p>
+                        </li>
+                        <li>
+                            <p>FromDarkHell: For work on the webui-design.</p>
+                        </li>
+                        <li>
+                            <p>Everyone else that was also involved in testing!</p>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="aboutPageContent" class="tabcontent">
-        <div class="content">
-            <div id="about" class="content settings about">
-                <h3>About</h3>
-                <p>First of all: Thank you for using B3HM! Check out the <a
-                        href="https://github.com/c0dycode/BL3HotfixWebUI/wiki/B3HM-Wiki">wiki</a> if you have any
-                    question before reaching out!</p>
-                <p>B3HM is a standalone tool to manage hotfix mods for Borderlands 3.</p>
-                <p>It does so by "intercepting" GearBox's hotfixes, altering them and THEN "deliver" them to the game.
-                    That means an internet connection IS REQUIRED!</p>
-                <h3>Disclaimer:</h3>
-                <p>I am not responsible for any issues/damages that could happen to your game/account/savegame(s)/pc
-                    if you use this tool.</p>
-                <p>B3HM allows you to "spawn" in items ("Receive Items" tab) via the ingame "Mail" option.</p>
-                <p>By using that option you agree to not abuse this system to spam people, sell "generated" items
-                    to
-                    others or any other way.</p>
-                <p>You also should only use this responsibly and not ruin other peoples experience with the game. So
-                    make sure the people you play with KNOW that you're using mods!</p>
-                <h3>More:</h3>
-                <ul>
-                    <li>
-                        <p>Author: <img style="margin-bottom: -0.5vh;" alt="GitHub followers"
-                                src="https://img.shields.io/github/followers/c0dycode?style=social"> GitHub:
-                            <a href="https://github.com/c0dycode">c0dycode</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>If you'd like to support me, feel free to do so here:
-                            <a
-                                href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CRVHLK9MURS9Q">
-                                <img style="margin-bottom: -0.5vh;"
-                                    src="https://img.shields.io/badge/Donate-PayPal-green.svg"></img>
-                            </a>
-                        </p>
-                        <p>If you consider donating, thank you very much! It is very much appreciated!</p>
-                    </li>
-                </ul>
-                <h3>Special thanks:</h3>
-                <ul>
-                    <li>
-                        <p>Apocalyptech: For assisting with various tasks.</p>
-                    </li>
-                    <li>
-                        <p>SSpyR and his community: For beta testing.</p>
-                    </li>
-                    <li>
-                        <p>FromDarkHell: For work on the webui-design.</p>
-                    </li>
-                    <li>
-                        <p>Everyone else that was also involved in testing!</p>
-                    </li>
-                </ul>
+        
+        <div class="fixed-footer">
+            <div class="container" id="footer">
+                <input type="button" value="Clear Log" id="clearButton">
+                <p id="log">
+                </p>
             </div>
         </div>
-    </div>
-
-    <div class="fixed-footer">
-        <div class="container" id="footer">
-            <input type="button" value="Clear Log" id="clearButton">
-            <p id="log">
-            </p>
-        </div>
-    </div>
-</body>
-
+    </body>
+    
 </html>
