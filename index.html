@@ -9,6 +9,8 @@
     <!--<![endif]-->
     
     <head>
+        <meta charset="utf-8"> <!-- This needs to be in the first 1024 bytes of the file -->
+        
         <!-- This includes fallbacks in the event that the respective CDNs are down/dead-->
         <script src="https://cdn.jsdelivr.net/npm/pako@1.0.10/dist/pako.min.js"></script>
         <script>window.pako || (document.head.appendChild(document.createElement('script')).src = './js/pako.min.js')</script>
@@ -19,22 +21,22 @@
         <script src="./js/main.js" defer></script>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
         
-        <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>BL3 Hotfix Merger</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="./css/styles.css">
-        <link rel="icon" type="image/png" href="favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
         
         <!-- Meta / Embed Tags -->
-        <meta content="Mod Borderlands 3 through hotfix injection!" name="description" >
+        <meta content="Mod Borderlands 3 through hotfix injection!" name="description">
         <meta content="Mod Borderlands 3 through hotfix injection!" property="og:description">
         <meta content="BL3 Hotfix Web UI" property="og:title">
         <meta content="BL3 Hotfix Web UI" property="og:site_name">
-        <meta content="#F7D800" name="theme-color">
+        <meta content="#E15C07" name="theme-color">
     </head>
     
     <body>
+        
         <div class="fixed-header">
             <div class="container" style="position: relative;">
                 <div class="tab">
@@ -106,18 +108,23 @@
             <div id="itemTradeContent" class="tabcontent">
                 <div class="content">
                     <div id="itemTrade" class="content settings">
-                        <strong>Receive Items</strong>
-                        <br><br>
+                        <h3 style="margin:15px;">Receive Items</h3>
                         <label style="margin: 15px;">Items to receive via Borderlands 3 Mail (F4 while in game)</label>
                         <br><br>
                     <select id="mailItemSelection" size="10"></select>
                     <br>
                     <br>
                     <label for="serialNumberInput" id="serialNumberInputLabel">Serial Number:</label>
-                    <input type="text" id="serialNumberInput" width="30vw"
-                    placeholder="e.g. AwAAAABsjoC8z5lBk2MaNwMCc/KINiYKLr4QAgAAAAAAlDEA">
+                    <input type="text" id="serialNumberInput" placeholder="e.g. BL3(AwAAAABsjoC8z5lBk2MaNwMCc/KINiYKLr4QAgAAAAAAlDEA)">
                     <input type="button" id="btnAddSerialNumber" value="Add">
                     <input type="button" id="btnRemoveSerialNumber" value="Delete">
+                    <br><br>
+                    <h3 style="margin:15px;">Resources</h3>
+                    <p style="margin:15px;">
+                        <a href="http://bl3editor.com/">Online Save Editor</a> by Baysix
+                        <br>
+                        <a href="http://bit.ly/3his9j1">Weapon Code Spreadsheet</a> by DOMIN8
+                    </p>
                 </div>
             </div>
         </div>
@@ -202,16 +209,19 @@
                     <h3>Special thanks:</h3>
                     <ul>
                         <li>
-                            <p>Apocalyptech: For assisting with various tasks.</p>
+                            <p><a href="https://github.com/apocalyptech">Apocalyptech</a>: Assisting with various tasks</p>
                         </li>
                         <li>
-                            <p>SSpyR and his community: For beta testing.</p>
+                            <p><a href="https://github.com/SSpyR">SSpyR</a> and his community: Beta testing</p>
                         </li>
                         <li>
-                            <p>FromDarkHell: For work on the webui-design.</p>
+                            <p><a href="https://www.twitter.com/FromDarkHell">FromDarkHell</a>: WebUI, <a href="https://github.com/FromDarkHell/BL3DX11Injection">PluginLoader</a>, & <a href="https://youtu.be/KYgUzKomXrk">Tutorial</a></p>
                         </li>
                         <li>
-                            <p>Everyone else that was also involved in testing!</p>
+                            <p><a href="https://www.twitter.com/PilotPlaysGames">PilotPlaysGames</a>: Making & designing the icons</p>
+                        </li>
+                        <li>
+                            <p>Everyone else who was involved in testing</p>
                         </li>
                     </ul>
                 </div>

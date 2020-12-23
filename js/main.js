@@ -303,7 +303,11 @@ var wsOnMessage = function(e) {
 		if (resp.EventName == "LogMessage") {
 			// Set the font color of the specific logging types
 			// ok = "green", error = "red", all others = "yellow"
-			styledContent = resp.Content.toString().fontcolor((resp.Error == "ok" ? "green" : (resp.Error == "error" ? "red" : "yellow")));
+			var ok = "#26B404";
+			var error = "#FF1404";
+			var others = "#F0C407";
+
+			styledContent = resp.Content.toString().fontcolor((resp.Error == "ok" ? ok : (resp.Error == "error" ? error : others)));
 			logParagraph.innerHTML = styledContent + "<br>" + logParagraph.innerHTML;
 		} else if (resp.EventName == "presetList") {
 			data = JSON.parse(resp.Content.toString())
@@ -341,9 +345,9 @@ var wsOnMessage = function(e) {
 			proxyVersion = resp.Content.toString();
 			let versionHeader = document.getElementById("versionHeader");
 			if (proxyVersion == uiVersion) {
-				versionHeader.innerHTML = ("Version: " + proxyVersion).fontcolor("green");
+				versionHeader.innerHTML = ("Version: " + proxyVersion);
 			} else {
-				versionHeader.innerHTML = ("Version: " + proxyVersion + " (Most recent version: " + uiVersion + "!)").fontcolor("red");
+				versionHeader.innerHTML = ("Version: " + proxyVersion + " (Most recent version: " + uiVersion + "!)").fontcolor("#FB171E");
 			}
 		} else if (resp.EventName == "itemSerialsList") {
 			clearChildElements("#mailItemSelection");
