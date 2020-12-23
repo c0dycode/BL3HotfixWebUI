@@ -283,7 +283,7 @@ var wsOnOpen = function(msg) {
 
 var wsOnClose = function(msg) {
 	console.log('Socket is closed. Reconnect will be attempted in 1 second.', msg.reason);
-	document.getElementById('warningLabel').textContent = 'WebSocket disconnected! Connection can take a bit. Be patient until you see info in the Log below!'; // Empty the warning label 
+	document.getElementById('warningLabel').textContent = 'WebSocket disconnected! Be patient until you see text in the logs.'; // Empty the warning label 
 	ws = null;
 	setTimeout(function() {
 		initWs();
@@ -535,9 +535,8 @@ function getProxyVersion() {
 // Trying to load delay first try of the connection
 // as trying it too early might fail and delay the connection 
 // for an unknown amount of time
-$(window).load(function() {
+$(window).on("load", function() {
 	setTimeout(function() {
 		initWs();
 	}, 1000);
-
 });

@@ -68,6 +68,7 @@ a {
     border-right-color: black;
     border-right-width: 3px;
     border-top: 50px;
+    line-height: 20px;
 }
 
 .last {
@@ -120,11 +121,10 @@ body {
 }
 
 #versionHeader {
-    vertical-align: bottom;
+    vertical-align: center;
     color: lawngreen;
-    margin: inherit;
     font-weight: bold !important;
-    float: inherit;
+    line-height: 30px;
 }
 
 #presetContainer {
@@ -172,6 +172,7 @@ body {
 
 #serialNumberInputLabel {
     margin: inherit;
+    margin-left: 15px;
 }
 
 .left strong {
@@ -200,7 +201,7 @@ body {
 }
 
 #deleteHotfixURLButton {
-    background-color: red !important;
+    background-color: #FB171E !important;
     border-color: transparent;
 }
 
@@ -212,32 +213,47 @@ body {
 #hotfixButtonLayout input[type="button"] {
     background-color: goldenrod;
     position: relative;
-    margin-left: 1.2%;
     margin-top: 1ex;
     border-color: transparent;
     border-radius: 12px;
 }
 
+#addURLButton {
+    margin-left: 1%;
+}
+
+#deleteHotfixURLButton {
+    margin-left: 3%;
+}
+
 #moveURLUpButton {
-    background-color: greenyellow !important;
+    margin-left: 1%;
+    background-color: #83DA20 !important;
     border-radius: 12px;
     border-color: transparent;
 }
 
 #moveURLDownButton {
-    background-color: greenyellow !important;
+    background-color: #83DA20 !important;
     border-radius: 12px;
     border-color: transparent;
+    margin-right: 1%;
 }
 
 #toggleHotfixButton {
-    background-color: mediumslateblue !important;
+    background-color: #3565DD !important;
     border-radius: 12px;
     border-color: transparent;
+    margin-right: 1%;
+}
+
+#addPresetButton {
+    margin-left: 1%;
 }
 
 #refreshHotfixURLButton {
-    background-color: greenyellow !important;
+    margin-left: 1%;
+    background-color: #83DA20 !important;
     border-radius: 12px;
     right: 10px;
     position: absolute !important;
@@ -246,10 +262,9 @@ body {
 
 #warningLabel {
     color: red;
-    vertical-align: middle;
-    padding-top: 0.5%;
-    padding-left: 5vw;
+    padding-left: 5%;
     font-family: sans-serif;
+    line-height: 30px;
 }
 
 #footer {
@@ -269,25 +284,26 @@ body {
 }
 
 #btnAddSerialNumber {
-    background-color: greenyellow;
+    background-color: #83DA20;
     border-radius: 12px;
     width: 95px;
     border-color: transparent;
 }
 
 #btnRemoveSerialNumber {
-    background-color: red !important;
+    background-color: #FB171E !important;
     border-radius: 12px;
     width: 95px;
     border-color: transparent;
 }
 
 #clearButton {
-    background-color: greenyellow;
+    background-color: #83DA20;
     border-radius: 12px;
     width: 95px;
     border-color: transparent;
     margin-left: 1px;
+    margin-bottom: 0.25%
 }
 
 #log {
