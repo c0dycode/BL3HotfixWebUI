@@ -10,9 +10,9 @@ var proxyVersion;
 var presetsVisible = false;
 
 var log = document.getElementById("log");
-$(window).on("load", function() {
+$(window).on("load", function () {
 	var clearbtn = document.getElementById("clearButton");
-	clearbtn.onclick = function() {
+	clearbtn.onclick = function () {
 		clearChildElements("#log")
 	}
 
@@ -23,7 +23,7 @@ $(window).on("load", function() {
 	}
 
 	// Close the Preset dropdown if we click somewhere else that's unrelated
-	$('html').on("click", function(e) {
+	$('html').on("click", function (e) {
 		if (presetsVisible &&
 			e.target != document.getElementById("presetBtn") &&
 			e.target != document.getElementById("myInput")) {
@@ -33,7 +33,7 @@ $(window).on("load", function() {
 	});
 
 	// ADD REMOTE HotfixURL
-	document.querySelector("#addURLButton").onclick = function(event) {
+	document.querySelector("#addURLButton").onclick = function (event) {
 		var url = prompt("Please enter the direct URL to a json- or txt-file!", "")
 		if (url != null) {
 			var msg = {
@@ -46,7 +46,7 @@ $(window).on("load", function() {
 	};
 
 	// ADD LOCAL HotfixURL
-	document.querySelector("#addLocalButton").onclick = function(event) {
+	document.querySelector("#addLocalButton").onclick = function (event) {
 		var msg = {
 			error: "ok",
 			content: "",
@@ -56,7 +56,7 @@ $(window).on("load", function() {
 	};
 
 	// DELETE HotfixURL
-	document.querySelector("#deleteHotfixURLButton").onclick = function(event) {
+	document.querySelector("#deleteHotfixURLButton").onclick = function (event) {
 		var url = document.querySelector("#hotfixSelection").value
 		if (url != null) {
 			var msg = {
@@ -70,7 +70,7 @@ $(window).on("load", function() {
 	};
 
 	// REFRESH HotfixURL
-	document.querySelector("#refreshHotfixURLButton").onclick = function(event) {
+	document.querySelector("#refreshHotfixURLButton").onclick = function (event) {
 		lastSelectedHotfix = document.querySelector("#hotfixSelection").value;
 		getHotfixList();
 		if (lastSelectedHotfix != null) {
@@ -84,7 +84,7 @@ $(window).on("load", function() {
 	};
 
 	// ADD Preset
-	document.querySelector("#addPresetButton").onclick = function(event) {
+	document.querySelector("#addPresetButton").onclick = function (event) {
 		var tmp = document.getElementById("presetBtn");
 		var currentSlection = tmp.innerHTML.toString();
 
@@ -118,7 +118,7 @@ $(window).on("load", function() {
 	};
 
 	// Add MailItem SerialNumber
-	document.querySelector("#btnAddSerialNumber").onclick = function(event) {
+	document.querySelector("#btnAddSerialNumber").onclick = function (event) {
 		sn = document.querySelector("#serialNumberInput").value;
 		if (sn != null) {
 			var msg = {
@@ -132,7 +132,7 @@ $(window).on("load", function() {
 	};
 
 	// Remove MailItem SerialNumber
-	document.querySelector("#btnRemoveSerialNumber").onclick = function(event) {
+	document.querySelector("#btnRemoveSerialNumber").onclick = function (event) {
 		sn = document.querySelector("#mailItemSelection").value;
 		if (sn != null) {
 			var msg = {
@@ -145,7 +145,7 @@ $(window).on("load", function() {
 	};
 
 	// Move HotfixURL Up - lower priority
-	document.querySelector("#moveURLUpButton").onclick = function(event) {
+	document.querySelector("#moveURLUpButton").onclick = function (event) {
 		lastSelectedHotfix = document.querySelector("#hotfixSelection").value;
 		let index = document.querySelector("#hotfixSelection").selectedIndex;
 
@@ -168,7 +168,7 @@ $(window).on("load", function() {
 	};
 
 	// Move HotfixURL Down - higher priority
-	document.querySelector("#moveURLDownButton").onclick = function(event) {
+	document.querySelector("#moveURLDownButton").onclick = function (event) {
 		lastSelectedHotfix = document.querySelector("#hotfixSelection").value;
 		let index = document.querySelector("#hotfixSelection").selectedIndex;
 
@@ -191,7 +191,7 @@ $(window).on("load", function() {
 	};
 
 	// Toggle HotfixURL button
-	document.querySelector("#toggleHotfixButton").onclick = function(event) {
+	document.querySelector("#toggleHotfixButton").onclick = function (event) {
 		lastSelectedHotfix = document.querySelector("#hotfixSelection").value;
 		let index = document.querySelector("#hotfixSelection").selectedIndex;
 
@@ -207,7 +207,7 @@ $(window).on("load", function() {
 		}
 	};
 
-	document.querySelector(".tablinks.last").onclick = function(event) {
+	document.querySelector(".tablinks.last").onclick = function (event) {
 		var decision = confirm("Would you like to exit? This will also turn off the proxy!")
 		if (decision == true) {
 			var msg = {
@@ -227,7 +227,7 @@ $(window).on("load", function() {
 		}
 	};
 
-	$("#mergeToggle").on("change", function(e) {
+	$("#mergeToggle").on("change", function (e) {
 		var value = $("#mergeToggle > input")[0].checked;
 		if (value !== null) {
 			var msg = {
@@ -241,7 +241,7 @@ $(window).on("load", function() {
 		}
 	});
 
-	$("#speedrunToggle").on("change", function(e) {
+	$("#speedrunToggle").on("change", function (e) {
 		var value = $("#speedrunToggle > input")[0].checked;
 		if (value !== null) {
 			var msg = {
@@ -270,7 +270,7 @@ function openTabContent(evt, tabName) {
 	evt.currentTarget.className += " active";
 }
 
-var wsOnOpen = function(msg) {
+var wsOnOpen = function (msg) {
 	console.log("WebSocket connected...");
 	document.getElementById('warningLabel').textContent = ''; // Empty the warning label 
 
@@ -281,21 +281,21 @@ var wsOnOpen = function(msg) {
 	getProxySettings();
 }
 
-var wsOnClose = function(msg) {
+var wsOnClose = function (msg) {
 	console.log('Socket is closed. Reconnect will be attempted in 1 second.', msg.reason);
 	document.getElementById('warningLabel').textContent = 'WebSocket disconnected! Be patient until you see text in the logs.'; // Empty the warning label 
 	ws = null;
-	setTimeout(function() {
+	setTimeout(function () {
 		initWs();
 	}, 1000);
 };
 
-var wsOnError = function(msg) {
+var wsOnError = function (msg) {
 	console.log("Websocket Error: ", msg);
 	ws.close();
 }
 
-var wsOnMessage = function(e) {
+var wsOnMessage = function (e) {
 	let logParagraph = document.getElementById("log");
 	try {
 		var raw_binary_data = new Uint8Array(e.data);
@@ -322,7 +322,7 @@ var wsOnMessage = function(e) {
 						item.innerText = elemCount + ". " + element;
 						item.value = element;
 
-						item.onclick = function(e) {
+						item.onclick = function (e) {
 							var tmp = document.getElementById("presetBtn");
 							tmp.innerHTML = e.target.value;
 
@@ -368,12 +368,11 @@ var wsOnMessage = function(e) {
 				});
 			}
 		} else if (resp.EventName == "hotfixList") {
-			if (resp.Content == "null") return;
+			clearChildElements("#hotfixSelection")
+			var hotfixes = JSON.parse(resp.Content);
+			if (hotfixes == "null") return;
 
 			var d = document.getElementById("hotfixSelection");
-			var hotfixes = JSON.parse(resp.Content);
-
-			clearChildElements("#hotfixSelection")
 			let elemCount = 1;
 			if (hotfixes != null && hotfixes.length > 0) {
 				hotfixes.forEach(element => {
@@ -384,7 +383,7 @@ var wsOnMessage = function(e) {
 					d.appendChild(item);
 					elemCount++;
 				});
-				d.onchange = function(e) {
+				d.onchange = function (e) {
 					lastSelectedHotfix = e.target.value;
 					var msg = {
 						error: "ok",
@@ -539,8 +538,8 @@ function getProxyVersion() {
 // Trying to load delay first try of the connection
 // as trying it too early might fail and delay the connection 
 // for an unknown amount of time
-$(window).on("load", function() {
-	setTimeout(function() {
+$(window).on("load", function () {
+	setTimeout(function () {
 		initWs();
 	}, 1000);
 });
