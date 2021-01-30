@@ -1,7 +1,7 @@
 /// <reference types="jquery" />
 
 const wsAdd = "ws://127.0.0.1:9998/ws";
-const uiVersion = "1.00";
+const uiVersion = "1.01";
 
 var ws
 var lastSelectedHotfix;
@@ -347,7 +347,7 @@ var wsOnMessage = function (e) {
 			if (proxyVersion == uiVersion) {
 				versionHeader.innerHTML = ("Version: " + proxyVersion);
 			} else {
-				versionHeader.innerHTML = ("Version: " + proxyVersion + " (Most recent version: " + uiVersion + "!)").fontcolor("#FB171E");
+				versionHeader.innerHTML = ("Version: " + proxyVersion + " (Most recent version: <a target=\"_blank\" rel=\"noopener noreferrer\"\n href=\"https://github.com/c0dycode/BL3HotfixWebUI/releases\">" + uiVersion + "</a>)").fontcolor("#FB171E");
 			}
 		} else if (resp.EventName == "itemSerialsList") {
 			clearChildElements("#mailItemSelection");
@@ -407,6 +407,7 @@ var wsOnMessage = function (e) {
 				});
 				formattedParam = JSON.stringify(JSON.parse(unpacked), null, 4);
 			} catch (e) {
+				console.log(e);
 				formattedParam = unpacked == "null" ? "N/A" : unpacked;
 			}
 			item.innerText = formattedParam;
