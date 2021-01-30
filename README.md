@@ -1,5 +1,5 @@
 # BL3HotfixWebUI
-This is the repo for the WebUI of my Borderlands 3 Hotfix Tool (it's not public yet. Don't ask about it!)
+This is the repo for the WebUI of my Borderlands 3 Hotfix Tool "B3HM".
 
 Feel free to fix my beginner html/css code.
 
