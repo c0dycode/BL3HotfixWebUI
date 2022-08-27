@@ -353,14 +353,15 @@ var wsOnMessage = function (e) {
 
 			var d = document.getElementById("hotfixSelection");
 			let elemCount = 1;
-			if (hotfixes != null && hotfixes.length > 0) {
-				hotfixes.forEach(element => {
+			if (hotfixes != null && hotfixes.urls.length > 0) {
+				for (let i = 0; i < hotfixes.urls.length; i++) {
+
 					var item = document.createElement("tr");
 					item.classList.add("hotfixRow");
 					var td1 = document.createElement("td");
-					td1.innerText = elemCount + ". " + element;
+					td1.innerText = hotfixes.urls[i].id + ". " + hotfixes.urls[i].path;
 					// td1.innerText = elemCount + ". " + element;
-					td1.value = element;
+					td1.value = hotfixes.urls[i].path;
 
 					var td2 = document.createElement("td");
 					td2.classList.add("text-center");
@@ -381,7 +382,7 @@ var wsOnMessage = function (e) {
 					deleteBtn.addEventListener("click", () => {
 						var msg = {
 							error: "ok",
-							content: element,
+							content: hotfixes.urls[i].path,
 							eventName: "removeHotfixURL"
 						}
 						ws.send(JSON.stringify(msg));
@@ -393,7 +394,7 @@ var wsOnMessage = function (e) {
 					toggleBtn.addEventListener("click", () => {
 						var msg = {
 							error: "ok",
-							content: hotfixes.indexOf(element).toString(),
+							content: i.toString(),
 							eventName: "toggleHotfixURL"
 						}
 						ws.send(JSON.stringify(msg));
@@ -407,7 +408,7 @@ var wsOnMessage = function (e) {
 					moveUpBtn.addEventListener("click", () => {
 						var msg = {
 							error: "ok",
-							content: hotfixes.indexOf(element).toString(),
+							content: i.toString(),
 							eventName: "moveHotfixURLUp"
 						}
 						ws.send(JSON.stringify(msg));
@@ -420,7 +421,7 @@ var wsOnMessage = function (e) {
 					moveDownBtn.addEventListener("click", () => {
 						var msg = {
 							error: "ok",
-							content: hotfixes.indexOf(element).toString(),
+							content: i.toString(),
 							eventName: "moveHotfixURLDown"
 						}
 						ws.send(JSON.stringify(msg));
@@ -431,7 +432,7 @@ var wsOnMessage = function (e) {
 					deleteIcon.classList.add("fas", "fa-trash");
 
 					var toggleIcon = document.createElement("i");
-					if (element.includes("[DISABLED] ")) {
+					if (hotfixes.urls[i].path.includes("[DISABLED] ")) {
 						toggleIcon.classList.add("fas", "fa-toggle-off");
 					} else {
 						toggleIcon.classList.add("fas", "fa-toggle-on");
@@ -460,7 +461,7 @@ var wsOnMessage = function (e) {
 
 					d.appendChild(item);
 					elemCount++;
-				});
+				}
 			}
 		} else if (resp.EventName == "parameters") {
 			var d = document.getElementById("parameters");
@@ -488,8 +489,6 @@ var wsOnMessage = function (e) {
 		else if (resp.EventName == "proxySettings") {
 			var temp = JSON.parse(resp.Content);
 			if (temp !== null) {
-				$("#proxyOpToggle")[0].checked = temp.operationalMode == 0;
-				$("#internalOpToggle")[0].checked = temp.operationalMode == 1;
 				$("#consoleOnToggle")[0].checked = temp.enableConsole == true;
 				$("#consoleOffToggle")[0].checked = temp.enableConsole == false;
 				$("#mergeToggle")[0].checked = temp.replaceHotfixes == false;
